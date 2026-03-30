@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Artikel & Review — RekomendasiPilihan</title>
+  <meta name="description" content="Baca artikel review dan panduan produk terpercaya dari RekomendasiPilihan. Ulasan jujur berdasarkan pengalaman nyata.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Artikel & Review — RekomendasiPilihan">
+  <meta property="og:site_name" content="RekomendasiPilihan">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Lato:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Lato',Arial,sans-serif;background:#f7f8fc;color:#1c1f2e;}
+    .nav{background:linear-gradient(135deg,#0d1b3e,#1a3a7c);height:58px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(13,27,62,.4);}
+    .logo{font-family:'Playfair Display',serif;color:#fff;font-size:1.1rem;font-weight:700;cursor:pointer;}
+    .logo span{color:#f0a500;font-style:italic;}
+    .nav-links a{color:rgba(255,255,255,.75);font-size:.85rem;text-decoration:none;margin-left:20px;cursor:pointer;}
+    .nav-links a:hover,.nav-links a.act{color:#fff;}
+    .page{max-width:1100px;margin:auto;padding:36px 20px 80px;display:grid;grid-template-columns:1fr 300px;gap:32px;align-items:start;}
+    @media(max-width:768px){.page{grid-template-columns:1fr;}}
+    .breadcrumb{font-size:.8rem;color:#6b7280;margin-bottom:18px;}
+    .breadcrumb a{color:#1a3a7c;text-decoration:none;cursor:pointer;}
+    .breadcrumb a:hover{text-decoration:underline;}
+    .list-header{font-family:'Playfair Display',serif;font-size:1.5rem;color:#0d1b3e;font-weight:700;margin-bottom:6px;}
+    .list-sub{font-size:.88rem;color:#6b7280;margin-bottom:24px;}
+    .list-search{display:flex;gap:10px;margin-bottom:20px;}
+    .list-search input{flex:1;padding:10px 16px;border:1.5px solid #e2e6f2;border-radius:50px;font-size:.9rem;font-family:'Lato',sans-serif;transition:.2s;}
+    .list-search input:focus{outline:none;border-color:#1a3a7c;box-shadow:0 0 0 3px rgba(26,58,124,.08);}
+    .list-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+    .chip{padding:6px 14px;border-radius:50px;border:1.5px solid #e2e6f2;background:#fff;font-size:.8rem;font-weight:500;cursor:pointer;color:#6b7280;font-family:'Lato',sans-serif;transition:.2s;}
+    .chip:hover{border-color:#1a3a7c;color:#1a3a7c;}
+    .chip.act{background:#0d1b3e;border-color:#0d1b3e;color:#fff;}
+    .art-card{background:#fff;border-radius:14px;border:1px solid #e2e6f2;display:flex;gap:16px;padding:18px;margin-bottom:16px;transition:.2s;cursor:pointer;}
+    .art-card:hover{box-shadow:0 8px 24px rgba(13,27,62,.1);transform:translateY(-2px);}
+    .art-thumb{width:100px;height:76px;border-radius:8px;object-fit:cover;flex-shrink:0;}
+    .art-info .art-kat{font-size:.68rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#e08c00;display:block;margin-bottom:5px;}
+    .art-info h3{font-family:'Playfair Display',serif;font-size:.95rem;color:#0d1b3e;margin-bottom:5px;font-weight:600;line-height:1.35;}
+    .art-info p{font-size:.8rem;color:#6b7280;line-height:1.55;}
+    .art-info .art-date{font-size:.75rem;color:#9ca3af;margin-top:6px;}
+    .empty-art{text-align:center;padding:60px 20px;color:#6b7280;}
+    .article-card{background:#fff;border-radius:16px;border:1px solid #e2e6f2;overflow:hidden;}
+    .hero-img{width:100%;max-height:520px;min-height:220px;height:auto;object-fit:cover;display:block;}
+    .share-bar{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 8px;}
+    .btn-share{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;background:#25D366;color:#fff;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;text-decoration:none;transition:.2s;}
+    .btn-share:hover{background:#1ebe5a;}
+    .btn-copy{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;background:#e8eaf2;color:#374151;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;transition:.2s;}
+    .btn-copy:hover{background:#d1d5db;}
+    .related-section{margin-top:32px;border-top:2px solid #f0a500;padding-top:20px;}
+    .related-section h3{font-family:'Playfair Display',serif;font-size:1rem;color:#0d1b3e;margin-bottom:14px;font-weight:700;}
+    .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
+    .related-card{background:#f7f8fc;border-radius:10px;overflow:hidden;cursor:pointer;transition:.2s;border:1px solid #e2e6f2;}
+    .related-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(13,27,62,.1);}
+    .related-card img{width:100%;height:100px;object-fit:cover;}
+    .related-card-body{padding:8px 10px;}
+    .related-card-body p{font-size:.78rem;font-weight:600;color:#1c1f2e;line-height:1.3;}
+    .related-card-body span{font-size:.7rem;color:#6b7280;}
+    .art-body{padding:32px 36px;}
+    @media(max-width:600px){.art-body{padding:18px;}}
+    .meta-row{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+    .cat-chip{background:#0d1b3e;color:#fff;font-size:.68rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 11px;border-radius:20px;}
+    .date-chip{color:#6b7280;font-size:.8rem;}
+    h1{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.25;color:#0d1b3e;margin-bottom:22px;font-weight:700;}
+    .prose{font-size:1rem;line-height:1.9;color:#374151;}
+    .prose p{margin-bottom:1.2em;}
+    .prose b,.prose strong{color:#1c1f2e;font-weight:700;}
+    .prose h2{font-family:'Playfair Display',serif;font-size:1.2rem;color:#0d1b3e;margin:1.6em 0 .6em;font-weight:700;}
+    .prose h3{font-family:'Playfair Display',serif;font-size:1.05rem;color:#0d1b3e;margin:1.2em 0 .5em;font-weight:600;}
+    .prose ul{margin:.8em 0 1em 1.4em;}
+    .prose li{margin-bottom:.4em;}
+    .inline-ad{margin:28px 0;background:#f7f8fc;border:1.5px dashed #e2e6f2;border-radius:12px;padding:14px;}
+    .ad-lbl{font-size:.68rem;letter-spacing:1px;text-transform:uppercase;color:#6b7280;margin-bottom:10px;font-weight:700;}
+    .ad-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+    .ad-card{background:#fff;border-radius:10px;border:1px solid #e2e6f2;overflow:hidden;transition:.2s;}
+    .ad-card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(13,27,62,.1);}
+    .ad-card img{width:100%;height:100px;object-fit:cover;}
+    .ad-info{padding:9px 10px;}
+    .ad-info .ad-kat{font-size:.65rem;text-transform:uppercase;color:#6b7280;font-weight:700;letter-spacing:.4px;}
+    .ad-info p{font-size:.8rem;font-weight:600;color:#1c1f2e;margin:3px 0 6px;line-height:1.3;height:2.4em;overflow:hidden;}
+    .ad-info .harga{font-size:.75rem;color:#059669;font-weight:700;margin-bottom:6px;display:block;}
+    .ad-info a{display:block;text-align:center;padding:6px;background:#f0a500;border-radius:6px;font-size:.75rem;font-weight:700;color:#0d1b3e;text-decoration:none;}
+    .ad-info a:hover{background:#e08c00;}
+    .sidebar{position:sticky;top:74px;}
+    .sb-card{background:#fff;border-radius:14px;border:1px solid #e2e6f2;padding:18px;margin-bottom:18px;}
+    .sb-card h4{font-family:'Playfair Display',serif;font-size:.95rem;color:#0d1b3e;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid #f0a500;font-weight:700;}
+    .sb-art{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid #f7f8fc;cursor:pointer;}
+    .sb-art:last-child{border:none;}
+    .sb-art img{width:54px;height:42px;border-radius:6px;object-fit:cover;flex-shrink:0;}
+    .sb-art p{font-size:.8rem;color:#1c1f2e;font-weight:500;line-height:1.3;}
+    .sb-art span{font-size:.7rem;color:#6b7280;}
+    .sb-art:hover p{color:#1a3a7c;}
+    .sb-prod{display:flex;gap:10px;align-items:center;margin-bottom:12px;}
+    .sb-prod img{width:50px;height:50px;border-radius:8px;object-fit:cover;flex-shrink:0;}
+    .sb-prod .sb-prod-info p{font-size:.8rem;font-weight:600;color:#1c1f2e;line-height:1.3;margin-bottom:4px;}
+    .sb-prod .sb-prod-info a{font-size:.72rem;font-weight:700;color:#0d1b3e;background:#f0a500;padding:3px 9px;border-radius:20px;text-decoration:none;}
+    .skel{background:linear-gradient(90deg,#e8eaf2 25%,#f0f2f7 50%,#e8eaf2 75%);background-size:200% 100%;animation:sk 1.5s infinite;border-radius:12px;}
+    @keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    .skel-block{margin-bottom:10px;}
+    .nf{text-align:center;padding:80px 20px;}
+    .nf h2{font-family:'Playfair Display',serif;font-size:1.8rem;color:#0d1b3e;margin-bottom:12px;}
+    .nf p{color:#6b7280;}
+    .btt{position:fixed;bottom:24px;right:24px;width:42px;height:42px;background:#0d1b3e;color:#fff;border:none;border-radius:50%;font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(13,27,62,.3);z-index:88;transition:.2s;}
+    .btt.vis{display:flex;}
+    .btt:hover{background:#1a3a7c;}
+    @media(max-width:600px){.art-card{flex-direction:column;}.art-thumb{width:100%;height:140px;}}
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="logo" onclick="goTo('Display')">Rekomendasi<span>Pilihan</span></div>
+  <div class="nav-links">
+    <a onclick="goTo('Display')">Katalog</a>
+    <a onclick="goTo('Artikel')" class="act">Artikel</a>
+  </div>
+</nav>
+
+<div class="page" id="page">
+  <div id="main-col">
+    <div class="skel skel-block" style="height:320px;border-radius:16px 16px 0 0;"></div>
+    <div style="background:#fff;border-radius:0 0 16px 16px;border:1px solid #e2e6f2;padding:32px 36px;">
+      <div class="skel skel-block" style="height:16px;width:60%;"></div>
+      <div class="skel skel-block" style="height:32px;width:90%;margin-top:10px;"></div>
+      <div class="skel skel-block" style="height:14px;margin-top:20px;"></div>
+      <div class="skel skel-block" style="height:14px;width:80%;"></div>
+    </div>
+  </div>
+  <aside id="sidebar-col" class="sidebar">
+    <div class="sb-card"><h4>🔥 Produk Pilihan</h4><div class="skel" style="height:110px;"></div></div>
+    <div class="sb-card"><h4>📰 Artikel Lainnya</h4><div class="skel" style="height:130px;"></div></div>
+  </aside>
+</div>
+
+<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  // ════════════════════════════════════════════════════════
+  //  ⚙️  KONFIGURASI — GANTI URL GAS KAMU DI SINI
+  // ════════════════════════════════════════════════════════
+  const GAS_URL = 'GANTI_DENGAN_URL_GAS_KAMU';
+  // Contoh: 'https://script.google.com/macros/s/AKfycb.../exec'
+  // ════════════════════════════════════════════════════════
+
+  // Baca ID artikel dari URL: /artikel?id=A123
+  const ARTIKEL_ID = new URLSearchParams(location.search).get('id') || '';
+
+  // ── JSONP Helper (solusi CORS untuk GAS) ─────────────────
+  function fetchGAS(params) {
+    return new Promise((resolve, reject) => {
+      const cbName = '_cb_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+      const script = document.createElement('script');
+      const timer  = setTimeout(() => {
+        reject(new Error('Timeout — pastikan GAS sudah di-deploy sebagai Web App'));
+        cleanup();
+      }, 20000);
+      window[cbName] = (data) => { clearTimeout(timer); resolve(data); cleanup(); };
+      script.onerror = () => { clearTimeout(timer); reject(new Error('Gagal memuat data')); cleanup(); };
+      function cleanup() { delete window[cbName]; if (script.parentNode) script.remove(); }
+      script.src = GAS_URL + '?' + params + '&callback=' + cbName;
+      document.head.appendChild(script);
+    });
+  }
+
+  // ── NAVIGASI ─────────────────────────────────────────────
+  function goTo(page, id) {
+    if (page === 'Display') {
+      window.location.href = '/';
+    } else if (page === 'Artikel') {
+      window.location.href = id ? '/artikel?id=' + id : '/artikel';
+    } else if (page === 'Admin') {
+      window.open(GAS_URL + '?p=Admin', '_blank');
+    }
+  }
+
+  function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+  window.addEventListener('scroll', () => { document.getElementById('btt').classList.toggle('vis', window.scrollY > 400); });
+
+  // ── RENDER DETAIL ARTIKEL ─────────────────────────────────
+  function renderDetail(data) {
+    if (!data) {
+      document.getElementById('main-col').innerHTML =
+        `<div class="nf"><h2>404 — Artikel Tidak Ditemukan</h2>
+         <p><a onclick="goTo('Artikel')" style="color:#1a3a7c;cursor:pointer;">← Kembali ke daftar artikel</a></p></div>`;
+      return;
+    }
+    const { artikel, ads } = data;
+    // Gunakan URL aktual halaman untuk share
+    const articleUrl = window.location.origin + '/artikel?id=' + artikel.id;
+    const waText = encodeURIComponent('📰 ' + artikel.judul + ' — baca di sini: ' + articleUrl);
+
+    // Update meta tag dinamis untuk sharing
+    document.title = artikel.judul + ' — RekomendasiPilihan';
+    setMeta('description', (artikel.konten||'').replace(/<[^>]+>/g,'').substring(0,160));
+
+    document.getElementById('main-col').innerHTML = `
+      <div class="breadcrumb">
+        <a onclick="goTo('Display')">Katalog</a> ›
+        <a onclick="goTo('Artikel')">Artikel</a> › ${esc(artikel.kategori||'Review')}
+      </div>
+      <article class="article-card" itemscope itemtype="https://schema.org/Article">
+        <img class="hero-img" src="${artikel.foto}" alt="${esc(artikel.judul)}" itemprop="image"
+             onerror="this.src='https://via.placeholder.com/1100x400?text=No+Image'">
+        <div class="art-body">
+          <div class="meta-row">
+            <span class="cat-chip">${esc(artikel.kategori||'Artikel')}</span>
+            <span class="date-chip">📅 <time itemprop="datePublished">${artikel.tanggal}</time></span>
+          </div>
+          <h1 itemprop="headline">${artikel.judul}</h1>
+          <div class="prose" itemprop="articleBody">${sisipAds(artikel.konten, ads)}</div>
+          <div class="share-bar">
+            <a class="btn-share" href="https://wa.me/?text=${waText}" target="_blank" rel="noopener">🟢 Share via WhatsApp</a>
+            <button class="btn-copy" onclick="copyArtikelLink('${articleUrl}')">🔗 Copy Link</button>
+          </div>
+          ${buildRelated(ads)}
+        </div>
+      </article>`;
+  }
+
+  function setMeta(name, content) {
+    let el = document.querySelector('meta[name="' + name + '"]');
+    if (!el) { el = document.createElement('meta'); el.name = name; document.head.appendChild(el); }
+    el.content = content;
+  }
+
+  function copyArtikelLink(url) {
+    navigator.clipboard.writeText(url).then(() => alert('Link artikel disalin!')).catch(() => {});
+  }
+
+  function buildRelated(ads) {
+    if (!ads || !ads.length) return '';
+    return `<div class="related-section">
+      <h3>🛍️ Produk Rekomendasi di Artikel Ini</h3>
+      <div class="related-grid">
+        ${ads.slice(0,4).map(p => `
+          <div class="related-card" onclick="window.open('${p.link}','_blank')">
+            <img src="${p.foto}" alt="${esc(p.judul)}" onerror="this.src='https://via.placeholder.com/200x100?text=No+Image'">
+            <div class="related-card-body">
+              <p>${p.judul}</p>
+              <span>${p.harga ? 'Rp ' + parseInt(p.harga).toLocaleString('id-ID') : 'Cek harga →'}</span>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  function sisipAds(konten, ads) {
+    if (!ads || !ads.length) return konten;
+    const blk  = buildAdBlock(ads);
+    const part = konten.split('</p>');
+    const idx  = Math.min(3, Math.floor(part.length / 2));
+    if (part.length > 2) part.splice(idx, 0, blk); else part.push(blk);
+    return part.join('</p>');
+  }
+
+  function buildAdBlock(ads) {
+    return `<div class="inline-ad">
+      <div class="ad-lbl">🛍️ Produk Rekomendasi Terkait</div>
+      <div class="ad-grid">${ads.map(p => `
+        <div class="ad-card" itemscope itemtype="https://schema.org/Product">
+          <img src="${p.foto}" alt="${esc(p.judul)}" loading="lazy"
+               onerror="this.src='https://via.placeholder.com/160x100?text=No+Image'">
+          <div class="ad-info">
+            <span class="ad-kat">${esc(p.kategori||'Produk')}</span>
+            <p itemprop="name">${p.judul}</p>
+            ${p.harga ? '<span class="harga">Rp ' + parseInt(p.harga).toLocaleString('id-ID') + '</span>' : ''}
+            <a href="${p.link}" target="_blank" rel="noopener sponsored">Cek Harga →</a>
+          </div>
+        </div>`).join('')}
+      </div></div>`;
+  }
+
+  // ── RENDER SIDEBAR ────────────────────────────────────────
+  function renderSidebar(ads, artList) {
+    const produkHTML = ads && ads.length
+      ? ads.slice(0,4).map(p => `
+          <div class="sb-prod">
+            <img src="${p.foto}" alt="${esc(p.judul)}"
+                 onerror="this.src='https://via.placeholder.com/50x50?text=No'">
+            <div class="sb-prod-info">
+              <p>${p.judul}</p>
+              <a href="${p.link}" target="_blank" rel="noopener sponsored">Cek →</a>
+            </div>
+          </div>`).join('')
+      : '<p style="color:#6b7280;font-size:.83rem;">Belum ada produk.</p>';
+
+    const artHTML = artList && artList.length
+      ? artList.filter(a => a.id !== ARTIKEL_ID).slice(0,6).map(a => `
+          <div class="sb-art" onclick="goTo('Artikel','${a.id}')">
+            <img src="${a.foto}" alt="${esc(a.judul)}"
+                 onerror="this.src='https://via.placeholder.com/54x42?text=No'">
+            <div><p>${a.judul}</p><span>${a.kategori||''} · ${a.tanggal||''}</span></div>
+          </div>`).join('')
+      : '<p style="color:#6b7280;font-size:.83rem;">Belum ada artikel lain.</p>';
+
+    document.getElementById('sidebar-col').innerHTML = `
+      <div class="sb-card"><h4>🔥 Produk Pilihan</h4>${produkHTML}</div>
+      <div class="sb-card"><h4>📰 Artikel Lainnya</h4>${artHTML}</div>`;
+  }
+
+  // ── RENDER LIST ARTIKEL ───────────────────────────────────
+  let allArt = [], artKat = '';
+
+  function renderList(list) {
+    const el  = document.getElementById('art-list'); if (!el) return;
+    const inp = document.getElementById('art-search-input');
+    const q   = inp ? inp.value.toLowerCase() : '';
+    let filtered = artKat ? list.filter(a => a.kategori === artKat) : list;
+    if (q) filtered = filtered.filter(a => (a.judul||'').toLowerCase().includes(q) || (a.kategori||'').toLowerCase().includes(q));
+    el.innerHTML = filtered.length ? filtered.map(a => `
+      <div class="art-card" onclick="goTo('Artikel','${a.id}')">
+        <img class="art-thumb" src="${a.foto}" alt="${esc(a.judul)}" loading="lazy"
+             onerror="this.src='https://via.placeholder.com/100x76?text=No+Image'">
+        <div class="art-info">
+          <span class="art-kat">${esc(a.kategori||'Artikel')}</span>
+          <h3>${a.judul}</h3>
+          <p>${a.preview}</p>
+          <span class="art-date">📅 ${a.tanggal}</span>
+        </div>
+      </div>`).join('')
+    : `<div class="empty-art"><div>🔍</div><p>Tidak ada artikel yang cocok.</p></div>`;
+  }
+
+  function buildChips(list) {
+    const chips  = document.getElementById('art-chips'); if (!chips) return;
+    const katSet = new Set(list.map(a => a.kategori).filter(Boolean));
+    katSet.forEach(k => {
+      const b = document.createElement('button');
+      b.className = 'chip'; b.dataset.kat = k; b.textContent = k;
+      chips.appendChild(b);
+    });
+    chips.addEventListener('click', e => {
+      const btn = e.target.closest('.chip'); if (!btn) return;
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('act'));
+      btn.classList.add('act'); artKat = btn.dataset.kat; renderList(allArt);
+    });
+  }
+
+  // ── INIT ─────────────────────────────────────────────────
+  (function init() {
+    if (ARTIKEL_ID) {
+      // ══ MODE DETAIL ══════════════════════════════════════
+      fetchGAS('action=artikel_detail&id=' + ARTIKEL_ID)
+        .then(data => {
+          renderDetail(data);
+          // Load sidebar secara paralel
+          fetchGAS('action=artikel_list')
+            .then(list => renderSidebar(data && data.ads, list))
+            .catch(() => {
+              // Sidebar gagal — tidak masalah, konten utama tetap tampil
+              document.getElementById('sidebar-col').innerHTML =
+                '<div class="sb-card"><p style="color:#6b7280;font-size:.83rem;">Gagal memuat sidebar.</p></div>';
+            });
+        })
+        .catch(e => {
+          document.getElementById('main-col').innerHTML =
+            `<div class="nf">
+              <h2>⚠️ Gagal Memuat</h2>
+              <p>${e.message}</p>
+              <p style="margin-top:12px;">
+                <a onclick="goTo('Artikel')" style="color:#1a3a7c;cursor:pointer;">← Kembali ke Artikel</a>
+              </p>
+            </div>`;
+        });
+
+    } else {
+      // ══ MODE LIST ════════════════════════════════════════
+      document.getElementById('sidebar-col').innerHTML = '';
+      document.getElementById('main-col').innerHTML = `
+        <div class="breadcrumb">
+          <a onclick="goTo('Display')" style="cursor:pointer;">Katalog</a> › Artikel
+        </div>
+        <div class="list-header">📰 Semua Artikel</div>
+        <div class="list-sub">Review jujur dan panduan belanja dari pengalaman nyata</div>
+        <div class="list-search">
+          <input type="text" id="art-search-input" placeholder="🔍 Cari artikel..." oninput="renderList(allArt)">
+        </div>
+        <div class="list-chips" id="art-chips">
+          <button class="chip act" data-kat="">Semua</button>
+        </div>
+        <div id="art-list">
+          <div class="skel" style="height:80px;margin-bottom:12px;"></div>
+          <div class="skel" style="height:80px;margin-bottom:12px;"></div>
+          <div class="skel" style="height:80px;margin-bottom:12px;"></div>
+        </div>`;
+
+      fetchGAS('action=artikel_list')
+        .then(list => {
+          allArt = list;
+          buildChips(list);
+          renderList(list);
+        })
+        .catch(e => {
+          const el = document.getElementById('art-list');
+          if (el) el.innerHTML =
+            `<div class="empty-art">
+              <div>⚠️</div>
+              <p>Gagal memuat artikel: ${e.message}</p>
+            </div>`;
+        });
+    }
+  })();
+</script>
+</body>
+</html>
