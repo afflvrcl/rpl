@@ -5,38 +5,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Artikel & Review — RekomendasiPilihan</title>
-  <!-- ══ SEO & Social Meta (default untuk halaman list artikel) ═ -->
-  <!-- Meta untuk halaman detail artikel diupdate dinamis via JS   -->
+  <!-- ══ SEO Meta ═══════════════════════════════════════════ -->
   <meta name="description" content="Baca artikel review dan panduan produk terpercaya dari RekomendasiPilihan. Ulasan jujur berdasarkan pengalaman nyata.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.rekomendasipilihan.my.id/artikel" id="meta-canonical">
   <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Artikel & Review — RekomendasiPilihan">
-  <meta property="og:description" content="Baca artikel review dan panduan produk terpercaya dari RekomendasiPilihan. Ulasan jujur berdasarkan pengalaman nyata.">
+  <meta property="og:type" content="website" id="meta-og-type">
+  <meta property="og:title" content="Artikel & Review — RekomendasiPilihan" id="meta-og-title">
+  <meta property="og:description" content="Baca artikel review dan panduan produk terpercaya dari RekomendasiPilihan." id="meta-og-desc">
   <meta property="og:url" content="https://www.rekomendasipilihan.my.id/artikel" id="meta-og-url">
   <meta property="og:site_name" content="RekomendasiPilihan">
   <meta property="og:locale" content="id_ID">
+  <meta property="og:image" content="" id="meta-og-image">
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Artikel & Review — RekomendasiPilihan" id="meta-tw-title">
   <meta name="twitter:description" content="Baca artikel review dan panduan produk terpercaya dari RekomendasiPilihan." id="meta-tw-desc">
   <meta name="twitter:image" content="" id="meta-tw-image">
-  <!-- Schema.org Blog (untuk list) / Article (diupdate JS saat detail) -->
+  <!-- Schema.org — diupdate JS saat buka detail artikel -->
   <script type="application/ld+json" id="schema-main">
   {"@context":"https://schema.org","@type":"Blog",
    "name":"RekomendasiPilihan — Artikel",
    "description":"Artikel review produk dan panduan belanja cerdas",
    "url":"https://www.rekomendasipilihan.my.id/artikel",
    "inLanguage":"id-ID",
-   "publisher":{"@type":"Organization","name":"RekomendasiPilihan","url":"https://www.rekomendasipilihan.my.id/"}}
+   "publisher":{"@type":"Organization","name":"RekomendasiPilihan",
+   "url":"https://www.rekomendasipilihan.my.id/"}}
   </script>
   <!-- ══ Google Analytics GA4 ════════════════════════════════ -->
+  <!-- Hapus komentar di bawah dan isi ID kamu setelah dapat dari analytics.google.com -->
   <!--
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-P7W7Q69N6P"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-P7W7Q69N6P');</script>
   -->
   <!-- ══ Google AdSense ══════════════════════════════════════ -->
+  <!-- Hapus komentar dan isi ca-pub-XXXXX setelah akun AdSense disetujui -->
   <!--
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXX" crossorigin="anonymous"></script>
   -->
@@ -206,6 +209,43 @@
     }
   }
 
+  // ── Update semua meta saat buka detail artikel ───────────
+  function updateMetaArtikel(artikel) {
+    const url  = window.location.origin + '/artikel?id=' + artikel.id;
+    const desc = (artikel.konten||'').replace(/<[^>]+>/g,'').substring(0,160);
+    document.title = artikel.judul + ' — RekomendasiPilihan';
+    const canon = document.getElementById('meta-canonical');
+    if (canon) canon.href = url;
+    setMetaId('meta-og-type',  'article');
+    setMetaId('meta-og-title', artikel.judul + ' — RekomendasiPilihan');
+    setMetaId('meta-og-desc',  desc);
+    setMetaId('meta-og-url',   url);
+    setMetaId('meta-og-image', artikel.foto||'');
+    setMetaProp('article:published_time', artikel.tanggal||'');
+    setMetaProp('article:section',        artikel.kategori||'Artikel');
+    setMetaId('meta-tw-title', artikel.judul);
+    setMetaId('meta-tw-desc',  desc);
+    setMetaId('meta-tw-image', artikel.foto||'');
+    const schema = document.getElementById('schema-main');
+    if (schema) schema.textContent = JSON.stringify({
+      "@context":"https://schema.org","@type":"Article",
+      "headline":artikel.judul,"description":desc,
+      "image":artikel.foto,"datePublished":artikel.tanggal,"dateModified":artikel.tanggal,
+      "author":{"@type":"Person","name":"RekomendasiPilihan Editor"},
+      "publisher":{"@type":"Organization","name":"RekomendasiPilihan",
+        "url":"https://www.rekomendasipilihan.my.id/"},
+      "mainEntityOfPage":{"@type":"WebPage","@id":url},
+      "inLanguage":"id-ID","articleSection":artikel.kategori||'Review'
+    });
+  }
+  function setMetaId(id, val) {
+    const el = document.getElementById(id); if (el) el.content = val;
+  }
+  function setMetaProp(prop, val) {
+    let el = document.querySelector('meta[property="'+prop+'"]');
+    if (!el) { el=document.createElement('meta'); el.setAttribute('property',prop); document.head.appendChild(el); }
+    el.content = val;
+  }
   function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
   window.addEventListener('scroll', () => { document.getElementById('btt').classList.toggle('vis', window.scrollY > 400); });
 
@@ -222,8 +262,9 @@
     const articleUrl = window.location.origin + '/artikel?id=' + artikel.id;
     const waText = encodeURIComponent('📰 ' + artikel.judul + ' — baca di sini: ' + articleUrl);
 
-    // Update semua meta tag dinamis (SEO + OG + Twitter + Schema)
-    updateMetaArtikel(artikel);
+    // Update meta tag dinamis untuk sharing
+    document.title = artikel.judul + ' — RekomendasiPilihan';
+    setMeta('description', (artikel.konten||'').replace(/<[^>]+>/g,'').substring(0,160));
 
     document.getElementById('main-col').innerHTML = `
       <div class="breadcrumb">
@@ -249,64 +290,10 @@
       </article>`;
   }
 
-  // Update semua meta tags dinamis saat buka detail artikel
-  function updateMetaArtikel(artikel) {
-    const url  = window.location.origin + '/artikel?id=' + artikel.id;
-    const desc = (artikel.konten||'').replace(/<[^>]+>/g,'').substring(0,160);
-    // Title
-    document.title = artikel.judul + ' — RekomendasiPilihan';
-    // Description
-    setMeta('description', desc);
-    // Canonical
-    const canonical = document.getElementById('meta-canonical');
-    if (canonical) canonical.href = url;
-    // OG
-    setMetaProp('og:title',                artikel.judul + ' — RekomendasiPilihan');
-    setMetaProp('og:description',          desc);
-    setMetaPropId('meta-og-url',           url);
-    setMetaProp('og:url',                  url);
-    setMetaProp('og:image',                artikel.foto||'');
-    setMetaProp('og:type',                 'article');
-    setMetaProp('article:published_time',  artikel.tanggal||'');
-    setMetaProp('article:section',         artikel.kategori||'Artikel');
-    // Twitter
-    setMetaId('meta-tw-title',  artikel.judul);
-    setMetaId('meta-tw-desc',   desc);
-    setMetaId('meta-tw-image',  artikel.foto||'');
-    // Schema.org Article
-    const schema = document.getElementById('schema-main');
-    if (schema) {
-      schema.textContent = JSON.stringify({
-        "@context":"https://schema.org","@type":"Article",
-        "headline": artikel.judul,
-        "description": desc,
-        "image": artikel.foto,
-        "datePublished": artikel.tanggal,
-        "dateModified": artikel.tanggal,
-        "author":{"@type":"Person","name":"RekomendasiPilihan Editor"},
-        "publisher":{"@type":"Organization","name":"RekomendasiPilihan",
-          "url": window.location.origin},
-        "mainEntityOfPage":{"@type":"WebPage","@id": url},
-        "inLanguage":"id-ID",
-        "articleSection": artikel.kategori||'Review'
-      });
-    }
-  }
-  function setMeta(name, val) {
+  function setMeta(name, content) {
     let el = document.querySelector('meta[name="' + name + '"]');
     if (!el) { el = document.createElement('meta'); el.name = name; document.head.appendChild(el); }
-    el.content = val;
-  }
-  function setMetaProp(prop, val) {
-    let el = document.querySelector('meta[property="' + prop + '"]');
-    if (!el) { el = document.createElement('meta'); el.setAttribute('property', prop); document.head.appendChild(el); }
-    el.content = val;
-  }
-  function setMetaId(id, val) {
-    const el = document.getElementById(id); if (el) el.content = val;
-  }
-  function setMetaPropId(id, val) {
-    const el = document.getElementById(id); if (el) el.content = val;
+    el.content = content;
   }
 
   function copyArtikelLink(url) {
