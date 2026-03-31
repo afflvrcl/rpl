@@ -1,5 +1,9 @@
 {
   "rewrites": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "https://script.google.com/macros/s/AKfycbxHAmzaTSeAal82t6ICiOG93qURxI2tTWu_F51uZCuFolQgcsrt6DP5uc4q7X-Bqsc7/exec?action=sitemap"
+    },
     { "source": "/artikel", "destination": "/artikel.html" },
     { "source": "/",        "destination": "/index.html"   }
   ],
