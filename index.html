@@ -48,8 +48,12 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXX" crossorigin="anonymous"></script>
   -->
   <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="preconnect" href="https://script.google.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Lato:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Lato:wght@400;500;700&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Lato:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Lato:wght@400;500;700&display=swap" rel="stylesheet"></noscript>
   <style>
     :root{--navy:#0d1b3e;--blue:#1a3a7c;--gold:#f0a500;--gold2:#e08c00;--off:#f7f8fc;--mid:#e8eaf2;--text:#1c1f2e;--muted:#6b7280;--r:14px;}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -95,12 +99,12 @@
     .card{background:#fff;border-radius:var(--r);border:1px solid var(--mid);overflow:hidden;transition:transform .25s,box-shadow .25s;position:relative;cursor:pointer;}
     .card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(13,27,62,.12);}
     .card-badge-unggulan{position:absolute;top:0;right:0;background:#f0a500;color:#0d1b3e;font-size:.65rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 10px;border-radius:0 0 0 10px;z-index:2;}
-    .card-img{height:195px;overflow:hidden;position:relative;}
-    .card-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+    .card-img{height:195px;overflow:hidden;position:relative;background:#f7f8fc;}
+    .card-img img{width:100%;height:100%;object-fit:contain;transition:transform .4s;}
     .card:hover .card-img img{transform:scale(1.06);}
     .slider-wrap{position:relative;height:100%;overflow:hidden;}
     .slider-track{display:flex;height:100%;transition:transform .35s ease;}
-    .slider-track img{flex-shrink:0;width:100%;height:100%;object-fit:cover;}
+    .slider-track img{flex-shrink:0;width:100%;height:100%;object-fit:contain;background:#f7f8fc;}
     .slider-btn{position:absolute;top:50%;transform:translateY(-50%);width:26px;height:26px;background:rgba(0,0,0,.45);color:#fff;border:none;border-radius:50%;font-size:.75rem;cursor:pointer;z-index:5;display:flex;align-items:center;justify-content:center;opacity:0;transition:.2s;}
     .card:hover .slider-btn{opacity:1;}
     .slider-btn.prev{left:6px;}
@@ -117,7 +121,7 @@
     .grid-opt-btn.act{background:var(--navy);color:#fff;border-color:var(--navy);}
     .modal-slider{position:relative;overflow:hidden;border-radius:20px 20px 0 0;}
     .modal-slider-track{display:flex;transition:transform .35s ease;}
-    .modal-slider-track .modal-img{flex-shrink:0;width:100%;height:260px;object-fit:cover;border-radius:0;}
+    .modal-slider-track .modal-img{flex-shrink:0;width:100%;height:260px;object-fit:contain;border-radius:0;background:#f7f8fc;}
     .modal-slider-btn{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;background:rgba(0,0,0,.4);color:#fff;border:none;border-radius:50%;font-size:1rem;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;}
     .modal-slider-btn.prev{left:10px;}
     .modal-slider-btn.next{right:10px;}
@@ -192,7 +196,6 @@
     .modal-cek{display:block;text-align:center;background:#f0a500;color:#0d1b3e;padding:14px;border-radius:10px;font-weight:700;font-size:.95rem;text-decoration:none;letter-spacing:.3px;transition:.2s;}
     .modal-cek:hover{background:#e08c00;}
     .modal-close{position:absolute;top:12px;right:12px;width:34px;height:34px;background:rgba(255,255,255,.9);border:none;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.15);z-index:10;}
-    .modal-img-wrap{position:relative;}
     .loading-overlay{position:fixed;inset:0;background:rgba(247,248,252,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:300;gap:16px;}
     .loading-overlay p{color:var(--navy);font-weight:600;font-size:.95rem;}
     .spinner{width:40px;height:40px;border:3px solid var(--mid);border-top-color:var(--navy);border-radius:50%;animation:spin .8s linear infinite;}
@@ -208,9 +211,9 @@
 <body>
 
 <!-- Loading screen -->
-<div class="loading-overlay" id="loading-overlay">
+<div class="loading-overlay" id="loading-overlay" style="display:none">
   <div class="spinner"></div>
-  <p>Memuat katalog produk...</p>
+  <p>Memuat katalog...</p>
 </div>
 
 <nav class="nav">
@@ -381,8 +384,8 @@
     const a = [...d];
     if (sortMode === 'unggulan')    return a.sort((x,y) => (y.unggulan?1:0) - (x.unggulan?1:0));
     if (sortMode === 'rating')      return a.sort((x,y) => parseFloat(y.rating||0) - parseFloat(x.rating||0));
-    if (sortMode === 'harga-asc')   return a.sort((x,y) => parseFloat(x.harga||0) - parseFloat(y.harga||0));
-    if (sortMode === 'harga-desc')  return a.sort((x,y) => parseFloat(y.harga||0) - parseFloat(x.harga||0));
+    if (sortMode === 'harga-asc')   return a.sort((x,y) => parseInt((x.harga||'0').toString().replace(/[^\d]/g,''))||0) - (parseInt((y.harga||'0').toString().replace(/[^\d]/g,''))||0));
+    if (sortMode === 'harga-desc')  return a.sort((x,y) => (parseInt((y.harga||'0').toString().replace(/[^\d]/g,''))||0) - (parseInt((x.harga||'0').toString().replace(/[^\d]/g,''))||0));
     return a;
   }
 
@@ -467,7 +470,7 @@
   // ── CARD PRODUK ──────────────────────────────────────────
   function cardProduk(r) {
     produkMap[r.id] = r;
-    const hargaFmt  = r.harga ? 'Rp ' + parseInt(r.harga).toLocaleString('id-ID') : '';
+    const _hargaNum = parseInt((r.harga||'').toString().replace(/[^\d]/g,'')); const hargaFmt = _hargaNum > 0 ? 'Rp ' + _hargaNum.toLocaleString('id-ID') : '';
     const stars     = r.rating ? '★'.repeat(Math.max(0, Math.min(5, Math.round(parseFloat(r.rating))))) +
                                   '☆'.repeat(Math.max(0, 5 - Math.round(parseFloat(r.rating)))) : '';
     const kondisiCls = (r.kondisi||'Baru').toLowerCase() === 'bekas' ? 'bekas' : 'baru';
@@ -478,7 +481,7 @@
     const sliderContent = hasSlider
       ? `<div class="slider-wrap">
           <div class="slider-track" id="slider-track-${r.id}">
-            ${fotos.map(f => `<img src="${f}" loading="lazy" alt="${esc(r.judul)}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">`).join('')}
+            ${fotos.map(f => `<img src="${f}" loading="lazy" decoding="async" alt="${esc(r.judul)}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">`).join('')}
           </div>
           <button class="slider-btn prev" onclick="cardSlide('${r.id}',-1,event)">‹</button>
           <button class="slider-btn next" onclick="cardSlide('${r.id}',1,event)">›</button>
@@ -486,7 +489,7 @@
             ${fotos.map((_, i) => `<div class="slider-dot ${i===0?'act':''}" onclick="event.stopPropagation();cardSlide('${r.id}',${i}-cardSliders['${r.id}'].idx,event)"></div>`).join('')}
           </div>
         </div>`
-      : `<img src="${fotos[0]||''}" loading="lazy" alt="${esc(r.judul)}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">`;
+      : `<img src="${fotos[0]||''}" loading="lazy" decoding="async" alt="${esc(r.judul)}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">`;
 
     return `
       <div class="card" data-kat="${esc(r.kategori)}" onclick="openModal('${r.id}',event)">
@@ -563,12 +566,13 @@
     const mRating = document.getElementById('m-rating');
     if (stars) {
       document.getElementById('m-stars').textContent = stars;
-      document.getElementById('m-stars-label').textContent = ratingNum.toFixed(1) + ' / 5.0';
+      document.getElementById('m-stars-label').textContent = ratingNum % 1 === 0 ? ratingNum + '.0 / 5.0' : ratingNum.toFixed(1) + ' / 5.0';
       mRating.style.display = 'flex';
     } else mRating.style.display = 'none';
     const mHarga = document.getElementById('m-harga');
-    if (r.harga && parseFloat(r.harga) > 0) {
-      mHarga.textContent = 'Rp ' + parseInt(r.harga).toLocaleString('id-ID');
+    const _mhNum = parseInt((r.harga||'').toString().replace(/[^\d]/g,''));
+    if (_mhNum > 0) {
+      mHarga.textContent = 'Rp ' + _mhNum.toLocaleString('id-ID');
       mHarga.style.display = 'block';
     } else mHarga.style.display = 'none';
     const tags = (r.tags||'').split(',').map(t => t.trim()).filter(Boolean);
@@ -589,6 +593,7 @@
 
   // ── INIT — Fetch dari GAS lewat JSONP ────────────────────
   (function init() {
+    document.getElementById('loading-overlay').style.display='flex';
     fetchGAS('action=catalog')
       .then(data => {
         document.getElementById('loading-overlay').style.display = 'none';
