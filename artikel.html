@@ -5,46 +5,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Artikel & Review — RekomendasiPilihan</title>
-  <!-- ══ SEO Meta ═══════════════════════════════════════════ -->
   <meta name="description" content="Baca artikel review dan panduan produk terpercaya dari RekomendasiPilihan. Ulasan jujur berdasarkan pengalaman nyata.">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://www.rekomendasipilihan.my.id/artikel" id="meta-canonical">
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" id="meta-og-type">
-  <meta property="og:title" content="Artikel & Review — RekomendasiPilihan" id="meta-og-title">
-  <meta property="og:description" content="Baca artikel review dan panduan produk terpercaya dari RekomendasiPilihan." id="meta-og-desc">
-  <meta property="og:url" content="https://www.rekomendasipilihan.my.id/artikel" id="meta-og-url">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Artikel & Review — RekomendasiPilihan">
   <meta property="og:site_name" content="RekomendasiPilihan">
-  <meta property="og:locale" content="id_ID">
-  <meta property="og:image" content="" id="meta-og-image">
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Artikel & Review — RekomendasiPilihan" id="meta-tw-title">
-  <meta name="twitter:description" content="Baca artikel review dan panduan produk terpercaya dari RekomendasiPilihan." id="meta-tw-desc">
-  <meta name="twitter:image" content="" id="meta-tw-image">
-  <!-- Schema.org — diupdate JS saat buka detail artikel -->
-  <script type="application/ld+json" id="schema-main">
-  {"@context":"https://schema.org","@type":"Blog",
-   "name":"RekomendasiPilihan — Artikel",
-   "description":"Artikel review produk dan panduan belanja cerdas",
-   "url":"https://www.rekomendasipilihan.my.id/artikel",
-   "inLanguage":"id-ID",
-   "publisher":{"@type":"Organization","name":"RekomendasiPilihan",
-   "url":"https://www.rekomendasipilihan.my.id/"}}
-  </script>
-  <!-- ══ Google Analytics GA4 ════════════════════════════════ -->
-  <!-- Hapus komentar di bawah dan isi ID kamu setelah dapat dari analytics.google.com -->
-  <!--
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P7W7Q69N6P"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-P7W7Q69N6P');</script>
-  -->
-  <!-- ══ Google AdSense ══════════════════════════════════════ -->
-  <!-- Hapus komentar dan isi ca-pub-XXXXX setelah akun AdSense disetujui -->
-  <!--
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXX" crossorigin="anonymous"></script>
-  -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Lato:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://script.google.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Lato:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Lato:wght@400;500;700&display=swap" rel="stylesheet"></noscript>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
@@ -70,14 +40,14 @@
     .chip.act{background:#0d1b3e;border-color:#0d1b3e;color:#fff;}
     .art-card{background:#fff;border-radius:14px;border:1px solid #e2e6f2;display:flex;gap:16px;padding:18px;margin-bottom:16px;transition:.2s;cursor:pointer;}
     .art-card:hover{box-shadow:0 8px 24px rgba(13,27,62,.1);transform:translateY(-2px);}
-    .art-thumb{width:100px;height:76px;border-radius:8px;object-fit:cover;flex-shrink:0;}
+    .art-thumb{width:100px;height:76px;border-radius:8px;object-fit:contain;background:#f7f8fc;flex-shrink:0;}
     .art-info .art-kat{font-size:.68rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#e08c00;display:block;margin-bottom:5px;}
     .art-info h3{font-family:'Playfair Display',serif;font-size:.95rem;color:#0d1b3e;margin-bottom:5px;font-weight:600;line-height:1.35;}
     .art-info p{font-size:.8rem;color:#6b7280;line-height:1.55;}
     .art-info .art-date{font-size:.75rem;color:#9ca3af;margin-top:6px;}
     .empty-art{text-align:center;padding:60px 20px;color:#6b7280;}
     .article-card{background:#fff;border-radius:16px;border:1px solid #e2e6f2;overflow:hidden;}
-    .hero-img{width:100%;max-height:520px;min-height:220px;height:auto;object-fit:cover;display:block;}
+    .hero-img{width:100%;max-height:520px;min-height:220px;height:auto;object-fit:contain;background:#f7f8fc;display:block;}
     .share-bar{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 8px;}
     .btn-share{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;background:#25D366;color:#fff;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;text-decoration:none;transition:.2s;}
     .btn-share:hover{background:#1ebe5a;}
@@ -88,7 +58,7 @@
     .related-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
     .related-card{background:#f7f8fc;border-radius:10px;overflow:hidden;cursor:pointer;transition:.2s;border:1px solid #e2e6f2;}
     .related-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(13,27,62,.1);}
-    .related-card img{width:100%;height:100px;object-fit:cover;}
+    .related-card img{width:100%;height:100px;object-fit:contain;background:#f7f8fc;}
     .related-card-body{padding:8px 10px;}
     .related-card-body p{font-size:.78rem;font-weight:600;color:#1c1f2e;line-height:1.3;}
     .related-card-body span{font-size:.7rem;color:#6b7280;}
@@ -127,7 +97,7 @@
     .sb-art span{font-size:.7rem;color:#6b7280;}
     .sb-art:hover p{color:#1a3a7c;}
     .sb-prod{display:flex;gap:10px;align-items:center;margin-bottom:12px;}
-    .sb-prod img{width:50px;height:50px;border-radius:8px;object-fit:cover;flex-shrink:0;}
+    .sb-prod img{width:50px;height:50px;border-radius:8px;object-fit:contain;background:#f7f8fc;flex-shrink:0;}
     .sb-prod .sb-prod-info p{font-size:.8rem;font-weight:600;color:#1c1f2e;line-height:1.3;margin-bottom:4px;}
     .sb-prod .sb-prod-info a{font-size:.72rem;font-weight:700;color:#0d1b3e;background:#f0a500;padding:3px 9px;border-radius:20px;text-decoration:none;}
     .skel{background:linear-gradient(90deg,#e8eaf2 25%,#f0f2f7 50%,#e8eaf2 75%);background-size:200% 100%;animation:sk 1.5s infinite;border-radius:12px;}
@@ -139,6 +109,18 @@
     .btt{position:fixed;bottom:24px;right:24px;width:42px;height:42px;background:#0d1b3e;color:#fff;border:none;border-radius:50%;font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(13,27,62,.3);z-index:88;transition:.2s;}
     .btt.vis{display:flex;}
     .btt:hover{background:#1a3a7c;}
+    /* Quill output CSS */
+    .prose .ql-align-center{text-align:center;}
+    .prose .ql-align-right{text-align:right;}
+    .prose .ql-align-justify{text-align:justify;}
+    .prose .ql-indent-1{padding-left:2em;}
+    .prose .ql-indent-2{padding-left:4em;}
+    .prose blockquote{border-left:4px solid #f0a500;padding:10px 16px;margin:1em 0;background:#fef9ec;border-radius:0 8px 8px 0;font-style:italic;color:#92400e;}
+    .prose pre{background:#1e293b;color:#e2e8f0;padding:16px;border-radius:8px;overflow-x:auto;font-size:.85rem;line-height:1.7;margin:1em 0;}
+    .prose code{background:#f1f5f9;padding:2px 6px;border-radius:4px;font-size:.85em;color:#e11d48;}
+    .prose img{max-width:100%;height:auto;border-radius:8px;margin:8px 0;display:block;object-fit:contain;}
+    .prose a{color:#1a3a7c;text-decoration:underline;}
+    .prose ol{padding-left:1.6em;margin:.8em 0 1em;}
     @media(max-width:600px){.art-card{flex-direction:column;}.art-thumb{width:100%;height:140px;}}
   </style>
 </head>
@@ -209,43 +191,6 @@
     }
   }
 
-  // ── Update semua meta saat buka detail artikel ───────────
-  function updateMetaArtikel(artikel) {
-    const url  = window.location.origin + '/artikel?id=' + artikel.id;
-    const desc = (artikel.konten||'').replace(/<[^>]+>/g,'').substring(0,160);
-    document.title = artikel.judul + ' — RekomendasiPilihan';
-    const canon = document.getElementById('meta-canonical');
-    if (canon) canon.href = url;
-    setMetaId('meta-og-type',  'article');
-    setMetaId('meta-og-title', artikel.judul + ' — RekomendasiPilihan');
-    setMetaId('meta-og-desc',  desc);
-    setMetaId('meta-og-url',   url);
-    setMetaId('meta-og-image', artikel.foto||'');
-    setMetaProp('article:published_time', artikel.tanggal||'');
-    setMetaProp('article:section',        artikel.kategori||'Artikel');
-    setMetaId('meta-tw-title', artikel.judul);
-    setMetaId('meta-tw-desc',  desc);
-    setMetaId('meta-tw-image', artikel.foto||'');
-    const schema = document.getElementById('schema-main');
-    if (schema) schema.textContent = JSON.stringify({
-      "@context":"https://schema.org","@type":"Article",
-      "headline":artikel.judul,"description":desc,
-      "image":artikel.foto,"datePublished":artikel.tanggal,"dateModified":artikel.tanggal,
-      "author":{"@type":"Person","name":"RekomendasiPilihan Editor"},
-      "publisher":{"@type":"Organization","name":"RekomendasiPilihan",
-        "url":"https://www.rekomendasipilihan.my.id/"},
-      "mainEntityOfPage":{"@type":"WebPage","@id":url},
-      "inLanguage":"id-ID","articleSection":artikel.kategori||'Review'
-    });
-  }
-  function setMetaId(id, val) {
-    const el = document.getElementById(id); if (el) el.content = val;
-  }
-  function setMetaProp(prop, val) {
-    let el = document.querySelector('meta[property="'+prop+'"]');
-    if (!el) { el=document.createElement('meta'); el.setAttribute('property',prop); document.head.appendChild(el); }
-    el.content = val;
-  }
   function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
   window.addEventListener('scroll', () => { document.getElementById('btt').classList.toggle('vis', window.scrollY > 400); });
 
@@ -258,6 +203,7 @@
       return;
     }
     const { artikel, ads } = data;
+    updateMetaArtikel(artikel);
     // Gunakan URL aktual halaman untuk share
     const articleUrl = window.location.origin + '/artikel?id=' + artikel.id;
     const waText = encodeURIComponent('📰 ' + artikel.judul + ' — baca di sini: ' + articleUrl);
@@ -290,11 +236,7 @@
       </article>`;
   }
 
-  function setMeta(name, content) {
-    let el = document.querySelector('meta[name="' + name + '"]');
-    if (!el) { el = document.createElement('meta'); el.name = name; document.head.appendChild(el); }
-    el.content = content;
-  }
+  // setMeta handled by updateMetaArtikel
 
   function copyArtikelLink(url) {
     navigator.clipboard.writeText(url).then(() => alert('Link artikel disalin!')).catch(() => {});
@@ -310,7 +252,7 @@
             <img src="${p.foto}" alt="${esc(p.judul)}" onerror="this.src='https://via.placeholder.com/200x100?text=No+Image'">
             <div class="related-card-body">
               <p>${p.judul}</p>
-              <span>${p.harga ? 'Rp ' + parseInt(p.harga).toLocaleString('id-ID') : 'Cek harga →'}</span>
+              <span>${(parseInt((p.harga||'').toString().replace(/[^\d]/g,''))||0)>0 ? 'Rp '+(parseInt((p.harga||'').toString().replace(/[^\d]/g,''))||0).toLocaleString('id-ID') : 'Cek harga →'}</span>
             </div>
           </div>`).join('')}
       </div>
