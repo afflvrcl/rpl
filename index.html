@@ -196,10 +196,7 @@
     .modal-cek{display:block;text-align:center;background:#f0a500;color:#0d1b3e;padding:14px;border-radius:10px;font-weight:700;font-size:.95rem;text-decoration:none;letter-spacing:.3px;transition:.2s;}
     .modal-cek:hover{background:#e08c00;}
     .modal-close{position:absolute;top:12px;right:12px;width:34px;height:34px;background:rgba(255,255,255,.9);border:none;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.15);z-index:10;}
-    .loading-overlay{position:fixed;inset:0;background:rgba(247,248,252,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:300;gap:16px;}
-    .loading-overlay p{color:var(--navy);font-weight:600;font-size:.95rem;}
-    .spinner{width:40px;height:40px;border:3px solid var(--mid);border-top-color:var(--navy);border-radius:50%;animation:spin .8s linear infinite;}
-    @keyframes spin{to{transform:rotate(360deg)}}
+    .spinner{display:none;}
     @media(max-width:640px){
       .card-artikel{flex-direction:column;}.artikel-img{width:100%;height:160px;}
       .nav-links a{margin-left:12px;font-size:.8rem;}.toolbar-right{display:none;}
@@ -210,11 +207,7 @@
 </head>
 <body>
 
-<!-- Loading screen -->
-<div class="loading-overlay" id="loading-overlay" style="display:none">
-  <div class="spinner"></div>
-  <p>Memuat katalog...</p>
-</div>
+<!-- Loading: pakai skeleton cards di grid, bukan overlay -->
 
 <nav class="nav">
   <div class="nav-inner">
@@ -267,7 +260,7 @@
 
 <div class="stats-bar">
   <div class="stats-row" id="stats-row">
-    <div class="stat-badge">📦 Memuat...</div>
+    <div class="stat-badge" id="loading-hint">⏳ Memuat produk...</div>
   </div>
 </div>
 
@@ -330,7 +323,7 @@
       const timer  = setTimeout(() => {
         reject(new Error('Timeout — pastikan GAS sudah di-deploy sebagai Web App'));
         cleanup();
-      }, 20000);
+      }, 15000); // 15 detik timeout
       window[cbName] = (data) => { clearTimeout(timer); resolve(data); cleanup(); };
       script.onerror = () => { clearTimeout(timer); reject(new Error('Gagal memuat data dari GAS')); cleanup(); };
       function cleanup() { delete window[cbName]; if (script.parentNode) script.remove(); }
@@ -593,10 +586,8 @@
 
   // ── INIT — Fetch dari GAS lewat JSONP ────────────────────
   (function init() {
-    document.getElementById('loading-overlay').style.display='flex';
     fetchGAS('action=catalog')
       .then(data => {
-        document.getElementById('loading-overlay').style.display = 'none';
         allData  = data;
         filtered = data;
         buildChips(data);
@@ -609,11 +600,14 @@
           `<div class="empty">
             <div class="ico">⚠️</div>
             <h3>Gagal memuat data</h3>
-            <p>${err.message}</p>
-            <p style="margin-top:8px;font-size:.8rem;color:#9ca3af;">
-              Pastikan GAS_URL di file ini sudah diisi dengan benar<br>
-              dan GAS sudah di-deploy ulang dengan akses <b>Anyone</b>.
-            </p>
+            <p style="color:#dc2626;font-size:.85rem;">${err.message}</p>
+            <div style="margin-top:16px;background:#fef9ec;border:1.5px solid #fcd34d;border-radius:10px;padding:14px;font-size:.82rem;color:#92400e;text-align:left;max-width:400px;margin-inline:auto;">
+              <b>Kemungkinan penyebab:</b><br>
+              1. Code.gs belum di-deploy ulang (New Version)<br>
+              2. Deployment masih akses "Only me", harus "Anyone"<br>
+              3. GAS_URL di index.html salah<br><br>
+              <b>Cek:</b> Buka URL GAS kamu + <code>?action=catalog&callback=test</code> di browser — harusnya tampil <code>test({...})</code>
+            </div>
           </div>`;
       });
   })();
