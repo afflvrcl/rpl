@@ -118,7 +118,6 @@
     .grid-opt-btn{padding:7px 10px;border:1.5px solid var(--mid);background:#fafbff;cursor:pointer;font-size:.78rem;font-weight:600;transition:.2s;color:var(--muted);}
     .grid-opt-btn:first-child{border-radius:8px 0 0 8px;}
     .grid-opt-btn:last-child{border-radius:0 8px 8px 0;margin-left:-1px;}
-    .mobile-grid-btns{display:none;}
     .grid-opt-btn.act{background:var(--navy);color:#fff;border-color:var(--navy);}
     .modal-slider{position:relative;overflow:hidden;border-radius:20px 20px 0 0;}
     .modal-slider-track{display:flex;transition:transform .35s ease;}
@@ -200,7 +199,7 @@
     .spinner{display:none;}
     @media(max-width:640px){
       .card-artikel{flex-direction:column;}.artikel-img{width:100%;height:160px;}
-      .nav-links a{margin-left:12px;font-size:.8rem;}.sort-select,.view-toggle{display:none;}.toolbar-right{gap:4px;}.mobile-grid-btns{display:flex!important;}
+      .nav-links a{margin-left:12px;font-size:.8rem;}.sort-select,.view-toggle{display:none;}.toolbar-right{gap:4px;}
       .grid.list-view .card{flex-direction:column;}.grid.list-view .card-img{width:100%;height:195px;}
       .modal-img{height:200px;}.modal-body{padding:18px 18px 22px;}
     }
@@ -257,10 +256,6 @@
   <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">
   <div class="chips-inner" id="chips-bar" style="flex:1;">
     <button class="chip act" data-kat="">Semua</button>
-  </div>
-  <div class="mobile-grid-btns" style="display:flex;gap:0;flex-shrink:0;">
-    <button class="grid-opt-btn act" id="m-go-2" onclick="setGridCols(2)" title="2 Kolom">▦2</button>
-    <button class="grid-opt-btn" id="m-go-3" onclick="setGridCols(3)" title="3 Kolom">▦3</button>
   </div>
   </div>
 </div>
@@ -443,10 +438,7 @@
   let gridCols = 2;
   function setGridCols(n) {
     gridCols = n;
-    // Desktop buttons
     ['2','3','4'].forEach(x => { const el=document.getElementById('go-'+x); if(el) el.classList.toggle('act', x==n); });
-    // Mobile buttons
-    ['2','3'].forEach(x => { const el=document.getElementById('m-go-'+x); if(el) el.classList.toggle('act', x==n); });
     if (viewMode !== 'list') document.getElementById('grid').className = 'grid grid-cols-' + n;
   }
   function setView(mode) {
