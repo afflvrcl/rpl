@@ -332,13 +332,26 @@
 <script>
   const GAS_URL = 'https://script.google.com/macros/s/AKfycbxHAmzaTSeAal82t6ICiOG93qURxI2tTWu_F51uZCuFolQgcsrt6DP5uc4q7X-Bqsc7/exec';
 
-  function fetchGAS(params) {
+  function fetchGAS(params, attempt) {
+    attempt = attempt || 1;
     return new Promise((resolve, reject) => {
       const cb = '_cb_' + Date.now() + '_' + Math.random().toString(36).slice(2);
       const s  = document.createElement('script');
-      const t  = setTimeout(() => { reject(new Error('Timeout — cek GAS_URL dan deployment')); cleanup(); }, 15000);
+      const t  = setTimeout(() => {
+        cleanup();
+        if (attempt < 2) {
+          // Server GAS sering butuh waktu ekstra saat cold-start — coba sekali lagi sebelum menyerah
+          fetchGAS(params, attempt + 1).then(resolve).catch(reject);
+        } else {
+          reject(new Error('Server sedang lambat merespons. Coba refresh halaman dalam beberapa saat.'));
+        }
+      }, 25000);
       window[cb] = d => { clearTimeout(t); resolve(d); cleanup(); };
-      s.onerror  = () => { clearTimeout(t); reject(new Error('Gagal memuat data dari GAS')); cleanup(); };
+      s.onerror  = () => {
+        clearTimeout(t); cleanup();
+        if (attempt < 2) { fetchGAS(params, attempt + 1).then(resolve).catch(reject); }
+        else reject(new Error('Gagal memuat data dari server.'));
+      };
       function cleanup() { delete window[cb]; if (s.parentNode) s.remove(); }
       s.src = GAS_URL + '?' + params + '&callback=' + cb;
       document.head.appendChild(s);
@@ -615,11 +628,10 @@
       })
       .catch(err => {
         document.getElementById('grid').innerHTML =
-          `<div class="empty"><div class="ico">⚠️</div><h3>Gagal memuat data</h3>
+          `<div class="empty"><div class="ico">⏳</div><h3>Gagal Memuat Produk</h3>
            <p style="color:#dc2626;font-size:.85rem;">${err.message}</p>
-           <div style="margin-top:14px;background:#fef9ec;border:1.5px solid #fcd34d;border-radius:10px;padding:12px;font-size:.8rem;color:#92400e;text-align:left;max-width:380px;margin-inline:auto;">
-             <b>Kemungkinan penyebab:</b><br>1. Code.gs belum di-deploy ulang (New Version)<br>2. Akses deployment harus "Anyone"
-           </div></div>`;
+           <button onclick="location.reload()" style="margin-top:14px;padding:9px 20px;background:var(--navy);color:#fff;border:none;border-radius:20px;font-size:.82rem;font-weight:700;cursor:pointer;">🔄 Muat Ulang</button>
+           </div>`;
       });
   })();
 </script>
