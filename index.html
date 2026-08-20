@@ -56,6 +56,26 @@
     .nav-links a{color:rgba(255,255,255,.75);text-decoration:none;font-size:.82rem;font-weight:600;margin-left:20px;padding:5px 2px;border-bottom:2px solid transparent;transition:.2s;cursor:pointer;}
     .nav-links a:hover,.nav-links a.act{color:#fff;border-bottom-color:#f0a500;}
 
+    /* ── CEK RESI — tombol + popover ringkas ── */
+    .resi-wrap{position:relative;margin-left:20px;}
+    .resi-btn{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:.76rem;font-weight:600;padding:6px 12px;border-radius:20px;cursor:pointer;transition:.2s;font-family:'Plus Jakarta Sans',sans-serif;}
+    .resi-btn:hover{background:rgba(255,255,255,.18);}
+    .resi-panel{display:none;position:absolute;top:calc(100% + 10px);right:0;background:#fff;border-radius:12px;box-shadow:0 16px 40px rgba(0,0,0,.22);padding:16px;width:270px;z-index:150;}
+    .resi-panel.open{display:block;animation:resiIn .15s ease;}
+    @keyframes resiIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+    .resi-panel::before{content:'';position:absolute;top:-6px;right:18px;width:12px;height:12px;background:#fff;transform:rotate(45deg);}
+    .resi-panel-lbl{font-size:.74rem;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:5px;}
+    .resi-form{display:flex;gap:6px;}
+    .resi-form input{flex:1;min-width:0;padding:8px 10px;border:1.5px solid var(--mid);border-radius:7px;font-size:.78rem;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);}
+    .resi-form input:focus{outline:none;border-color:var(--price);}
+    .resi-form button{background:linear-gradient(135deg,var(--price),#d73211);border:none;color:#fff;font-weight:700;font-size:.76rem;padding:8px 12px;border-radius:7px;cursor:pointer;white-space:nowrap;}
+    .resi-hint{font-size:.66rem;color:var(--muted);margin-top:7px;}
+    @media(max-width:640px){
+      .resi-wrap{margin-left:8px;}
+      .resi-btn span.resi-txt{display:none;}
+      .resi-panel{right:-8px;width:230px;}
+    }
+
     /* ── HERO (compact) ───────────────────── */
     .hero{background:linear-gradient(120deg,#0a1530 0%,#162d65 55%,#1a3a7c 100%);padding:22px 16px;text-align:center;color:#fff;}
     .hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,3vw,1.5rem);line-height:1.25;font-weight:700;}
@@ -230,9 +250,20 @@
 <nav class="nav">
   <div class="nav-inner">
     <div class="logo" onclick="goTo('Display')">Rekomendasi<span>Pilihan</span></div>
-    <div class="nav-links">
+    <div class="nav-links" style="display:flex;align-items:center;">
       <a onclick="goTo('Display')" class="act">Katalog</a>
       <a onclick="goTo('Artikel')">Artikel</a>
+      <div class="resi-wrap">
+        <button class="resi-btn" onclick="toggleResi(event)">📦 <span class="resi-txt">Lacak Paket</span></button>
+        <div class="resi-panel" id="resi-panel">
+          <div class="resi-panel-lbl">🚚 Cek Resi Pengiriman</div>
+          <form class="resi-form" action="https://cekresi.com/" method="GET" target="_blank">
+            <input type="text" name="noresi" placeholder="Nomor resi..." required autocomplete="off">
+            <button type="submit">Lacak</button>
+          </form>
+          <div class="resi-hint">Cek status kiriman semua ekspedisi</div>
+        </div>
+      </div>
     </div>
   </div>
 </nav>
@@ -357,6 +388,18 @@
       document.head.appendChild(s);
     });
   }
+
+  // ── CEK RESI — toggle popover ──────────────────────────────
+  function toggleResi(e) {
+    e.stopPropagation();
+    document.getElementById('resi-panel').classList.toggle('open');
+  }
+  document.addEventListener('click', (e) => {
+    const panel = document.getElementById('resi-panel');
+    if (panel && panel.classList.contains('open') && !panel.contains(e.target) && !e.target.closest('.resi-btn')) {
+      panel.classList.remove('open');
+    }
+  });
 
   function goTo(page, id) {
     if (page === 'Display') { window.location.href = '/'; return; }
