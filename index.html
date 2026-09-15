@@ -4,9 +4,9 @@
   <base target="_top">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RekomendasiPilihan — Produk-Produk Pilihan Buat Anda</title>
+  <title>RekomendasiPilihan — Produk Terpercaya Berdasarkan Pengalaman Nyata</title>
   <!-- ══ SEO ══ -->
-  <meta name="description" content="Rekomendasi produk terpercaya berdasarkan pengalaman, dan ulasan, panduan belanja cerdas.">
+  <meta name="description" content="Rekomendasi produk terpercaya berdasarkan pengalaman nyata. Ulasan jujur, panduan belanja cerdas.">
   <meta name="keywords" content="rekomendasi produk, review produk, produk terbaik indonesia, afiliasi terpercaya, panduan belanja, ulasan jujur">
   <meta name="robots" content="index, follow">
   <meta name="author" content="RekomendasiPilihan">
@@ -392,12 +392,20 @@
   // ── CEK RESI — toggle popover ──────────────────────────────
   function toggleResi(e) {
     e.stopPropagation();
-    document.getElementById('resi-panel').classList.toggle('open');
+    const panel = document.getElementById('resi-panel');
+    const willOpen = !panel.classList.contains('open');
+    panel.classList.toggle('open');
+    if (willOpen && (!history.state || !history.state.resiOpen)) {
+      history.pushState({ resiOpen: true }, '');
+    } else if (!willOpen && history.state && history.state.resiOpen) {
+      history.back();
+    }
   }
   document.addEventListener('click', (e) => {
     const panel = document.getElementById('resi-panel');
     if (panel && panel.classList.contains('open') && !panel.contains(e.target) && !e.target.closest('.resi-btn')) {
       panel.classList.remove('open');
+      if (history.state && history.state.resiOpen) history.back();
     }
   });
 
@@ -654,10 +662,35 @@
        <button class="btn-copy-link" onclick="copyLink('${r.link}')">🔗 Copy Link</button>`;
     document.getElementById('modal-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
+    // Titipkan 1 langkah history — supaya tombol back HP nutup modal dulu, bukan langsung keluar situs
+    if (!history.state || !history.state.modalOpen) {
+      history.pushState({ modalOpen: true }, '');
+    }
   }
 
   function copyLink(url) { navigator.clipboard.writeText(url).then(()=>alert('Link disalin!')).catch(()=>{}); }
-  function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); document.body.style.overflow = ''; }
+
+  // _hideModalUI = benar-benar sembunyikan modal dari layar (tanpa sentuh history)
+  function _hideModalUI() {
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  // closeModal = dipanggil dari tombol ✕ / klik luar / Escape — mundurkan history 1 langkah,
+  // biar konsisten sama tombol back HP (popstate akan panggil _hideModalUI)
+  function closeModal() {
+    if (history.state && history.state.modalOpen) {
+      history.back();
+    } else {
+      _hideModalUI();
+    }
+  }
+  // Tombol back HP (atau back() di atas) memicu ini — tutup overlay yang lagi aktif, TIDAK keluar situs
+  window.addEventListener('popstate', () => {
+    _hideModalUI();
+    const panel = document.getElementById('resi-panel');
+    if (panel) panel.classList.remove('open');
+  });
+
   document.getElementById('modal-overlay').addEventListener('click', function(e) { if(e.target===this) closeModal(); });
   document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
   function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
